@@ -1,0 +1,31 @@
+
+a) Calculate: total_transactions, unique_users, and total_transaction_amount for every date and hour combination
+SELECT 
+    DATE(timestamp) AS transaction_date,
+    HOUR(timestamp) AS transaction_hour,
+    COUNT(transaction_id) AS total_transactions,
+    COUNT(DISTINCT user_id) AS unique_users,
+    SUM(transaction_amount) AS total_transaction_amount
+FROM transactions
+GROUP BY transaction_date, transaction_hour
+ORDER BY transaction_date, transaction_hour;
+
+b) Calculate the hour with the highest transaction_amount for every date
+WITH HourlyTotals AS (
+    SELECT 
+        DATE(timestamp) AS transaction_date,
+        HOUR(timestamp) AS transaction_hour,
+        SUM(transaction_amount) AS total_transaction_amount
+    FROM transactions
+    GROUP BY transaction_date, transaction_hour
+)
+SELECT 
+    transaction_date,
+    transaction_hour,
+    total_transaction_amount
+FROM HourlyTotals h1
+WHERE total_transaction_amount = (
+    SELECT MAX(total_transaction_amount)
+    FROM HourlyTotals h2
+    WHERE h2.transaction_date = h1.transaction_date
+);
