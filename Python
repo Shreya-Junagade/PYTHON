@@ -1,0 +1,24 @@
+1)Calculate: total_transactions, unique_users, and total_transaction_amount for every date and hour combination
+
+import pandas as pd
+df['transaction_date'] = pd.to_datetime(df['timestamp']).dt.date
+df['transaction_hour'] = pd.to_datetime(df['timestamp']).dt.hour
+aggregated_data = df.groupby(['transaction_date', 'transaction_hour']).agg(
+    total_transactions=('transaction_id', 'count'),
+    unique_users=('user_id', 'nunique'),
+    total_transaction_amount=('transaction_amount', 'sum')
+).reset_index()
+
+print(aggregated_data)
+
+2))Calculate hour with the highest transaction_amount for every date
+
+hourly_totals = df.groupby(['transaction_date', 'transaction_hour']).agg(
+    total_transaction_amount=('transaction_amount', 'sum')
+).reset_index()
+
+max_hour_per_date = hourly_totals.loc[
+    hourly_totals.groupby('transaction_date')['total_transaction_amount'].idxmax()
+]
+
+print(max_hour_per_date)
