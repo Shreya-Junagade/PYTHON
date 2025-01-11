@@ -1,0 +1,6 @@
+Findings and Insights from the Dataset
+1)Peak Transaction Times:
+By analyzing the hour with the highest transaction amounts for each date, we can identify peak hours of usage. This is useful for planning infrastructure scalability.
+
+2)User Activity Patterns:
+Unique users per hour can help identify when the customer base is most active and whether there are any seasonal or daily trends (e.g., weekends vs. weekdays).
